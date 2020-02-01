@@ -1,0 +1,109 @@
+<html>
+    <head>
+      
+      <style>
+        container {width:100%;}
+        left {align: left;}
+        right {align: right;}
+        center{margin:0 auto;}
+        
+        table#t01 {
+          background-color: #f1f1c1;
+          text-align: center;
+          width: 100%
+        }
+
+      </style>
+      {% if title %}
+      <title>{{ title }}</title>
+      {% else %}
+      <title>Scopes Inc</title>
+      {% endif %}
+    
+      <script>
+  
+         function resizeButtons() {
+      
+          buttonHeight = window.innerHeight / 13
+          all_buttons = document.getElementsByName("page_button")
+   
+          buttonFontSize=buttonHeight*0.3
+
+          var i
+   
+          for(i=0; i< all_buttons.length; i++) {
+            all_buttons[i].style.height=buttonHeight+"px"
+            all_buttons[i].style.width="100%"
+            all_buttons[i].style.fontSize=buttonFontSize+"px"
+         }
+   
+         table = document.getElementById("t01")
+         table.style.fontSize=buttonFontSize+"px"
+        }
+
+    function resizeImage() {
+
+     image = document.getElementById("display_image")
+    
+     ratio = image.clientWidth / (window.innerWidth * 0.8) 
+    
+     width = image.clientWidth / ratio;
+     height = image.clientHeight / ratio;
+
+     width_txt = width + 'px';
+     height_txt = height + 'px';
+     image.style.width=width_txt
+     image.style.height=height_txt
+    }
+
+    function shutdownAlert() {
+      if (window.confirm("do you REALLY want to shut down the system?")) {
+        window.location.replace("/shutdown")
+      } else {
+        window.location.repload()
+      }
+    }
+
+    </script>
+    
+    </head>
+
+    <body onload="resizeButtons()">
+      <div id="container">
+          Navigation: 
+            {% if not current_user.is_authenticated: %}
+            <a href="{{ url_for('login') }}">Login</a>
+            {% else %}
+            <a href="{{ url_for('logout') }}">Logout</a>
+            <a href="{{ url_for('setup') }}">Setup</a>
+             {% endif %}
+            {% if current_user.is_anonymous %}
+            user: anonymous
+            {% else %}
+            user: {{ current_user.username }}
+            {% endif %}
+      </div>
+      
+      {% if title %}
+      <p><img src="static/logo-01.png" alt="Scopes Inc" style="float:right;width:124px;height:41px;">
+         <h2>{{ title }}</h2>
+      </p>
+      {% endif %}
+ 
+      <br>
+      <hr>
+      {% with messages = get_flashed_messages() %}
+         {% if messages %}
+         Messages:
+         <ul>
+            {% for message in messages %}
+               <li>{{ message }}</li>
+            {% endfor %}
+         </ul>
+         <br>
+        {% endif %}
+      {% endwith %}
+
+      {% block content %}{% endblock %}
+    </body>
+</html>

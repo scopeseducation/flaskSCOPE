@@ -1,0 +1,73 @@
+{% extends "base_noNav.html" %}
+
+{% block content %}
+
+   <!-- function to throw warning upon deleting of files -->
+   <!--  idea from here: -->
+   <!-- https://stackoverflow.com/questions/6515502/javascript-form-submit-confirm-or-cancel-submission-dialog-box -->
+   
+   <!-- function to test whether any checkbox is ticked from here : -->
+   <!-- https://stackoverflow.com/questions/9119407/how-do-i-check-if-any-checkboxes-at-all-on-the-page-are-checked -->
+   <script>
+      function validate(form) {
+
+         if(!anyCheckbox()) {
+            return true;
+         }
+         else {
+            return confirm('Do you really want to delete the checked files?');
+         }
+      }
+
+      function anyCheckbox()
+      {
+         var inputElements = document.getElementsByTagName("input");
+         for (var i = 0; i < inputElements.length; i++)
+            if (inputElements[i].type == "checkbox")
+               if (inputElements[i].checked)
+                return true;
+         return false;
+      }
+      
+      function resizeButtons() {
+   
+         buttonHeight = window.innerHeight / 13
+         all_buttons = document.getElementsByName("main_page_button")
+   
+         buttonFontSize=buttonHeight*0.45
+
+         var i
+         for(i=0; i< all_buttons.length; i++) {
+            all_buttons[i].style.height=buttonHeight+"px"
+            all_buttons[i].style.width="100%"
+            all_buttons[i].style.fontSize=buttonFontSize+"px"
+      }
+   
+      table = document.getElementById("t01")
+      table.style.fontSize=buttonFontSize+"px"
+   }
+   </script>
+
+      <form onsubmit="return validate(this);" action = {{ url_for('update_config') }} method = "post">
+         <table id="t01" border = 0>
+            <tr>
+               <th colspan=3>Scopes Inc DisplayScope File Control center</th>
+            </tr>
+
+            {% for value in result %}
+            <tr>
+               {% set list1 = value.split(',') %}
+               <td> filename: {{ list1[0] }} </td>
+               <th> QR code for file <BR> <input type = "text" name = "{{ list1[0] }}" value = "{{ list1[1] }}"/></th>
+               <th>  delete this file? <BR> <input type = "checkbox" name = "del.{{ list1[0] }}" value="{{ list1[0] }}"/></th>
+            </tr>
+            {% endfor %}
+            <tr><th colspan=3><p><input type = "submit" value = "submit" name="main_page_button"/></p></th></tr>
+         </table>   
+         <table>
+            
+         </table>
+ 
+      </form>
+
+{% endblock %}

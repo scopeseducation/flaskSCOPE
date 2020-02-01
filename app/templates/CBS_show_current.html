@@ -1,0 +1,13 @@
+{% extends "base_noNav.html" %}
+
+{% block content %}
+
+  <div class="image"> 
+      <img id="status_image" src="{{ img_name }}" alt="latest image"></td>
+  </div>
+      
+  running since: {{ runtime }}
+  total images taken: {{ img_taken_number }}
+  <a href="{{ url_for('CBS_main') }}" target="_parent"><button name="status_page_button">main page</button></a>
+ 
+{% endblock %}

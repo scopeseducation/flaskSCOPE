@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<a href="{{ url_for('do_config') }}" target="_parent"><button name="page_button">manage files</button></a>
+
+<a href="{{ url_for('do_upload') }}" target="_parent"><button name="page_button">upload files</button></a>
+
+<a href="{{ url_for('use_current_config') }}" target="_parent"><button name="page_button">use current configuration</button></a>
+
+<a href="{{ url_for('change_password') }}" target="_parent"><button name="page_button">change password</button></a>
+
+{% if status == "DisplayScope" %}
+<a href="{{ url_for('set_default') }}?mode=DisplayScope" target="_parent"><button name="page_button", disabled>turn DisplayScopen OFF</button></a>
+{% else %}
+<a href="{{ url_for('set_default') }}?mode=DisplayScope" target="_parent"><button name="page_button">turn DisplayScopen ON</button></a>
+{% endif %}
+
+{% if status == "CBS" %}
+<a href="{{ url_for('set_default') }}?mode=CBS" target="_parent"><button name="page_button", disabled>turn CBS ON</button></a>
+{% else %}
+<a href="{{ url_for('set_default') }}?mode=CBS" target="_parent"><button name="page_button">turn CBS ON</button></a>
+{% endif %}
+
+{% if status == "DNAScope" %}
+<a href="{{ url_for('set_default') }}?mode=DNAScope" target="_parent"><button name="page_button", disabled>turn DNAScope ON</button></a>
+{% else %}
+<a href="{{ url_for('set_default') }}?mode=DNAScope" target="_parent"><button name="page_button">turn DNAScope ON</button></a>
+{% endif %}
+
+<a href="{{ url_for('register') }}" target="_parent"><button name="page_button">register new user</button></a>
+
+<button type="button" onclick="shutdownAlert()" name="page_button" {{ shutdown_button }}>shut down system</button>
+ 
+{% endblock %}

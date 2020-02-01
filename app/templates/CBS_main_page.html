@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+<!-- reloads page every 3 sec only for special staus situations -->
+<script type="text/javascript">
+    {% if CBS_status == 'doing_rm' %}
+    setInterval('window.location.reload()', 3000)
+    {% elif CBS_status == 'creating_container' %}
+    setInterval('window.location.reload()', 3000)
+    {% else %} 
+    setInterval('window.location.reload()', 60000)
+    {% endif %}
+</script>
+
+<!-- function to execute deleting of files -->
+<script>
+function removeAlert() {
+  if (window.confirm("do you REALLY want to delete all files of the latest experiment?\nThis can not be undone!")) {
+    window.location.replace("/delete_files")
+  } else {
+    window.location.repload()
+  }
+}
+
+function movieAlert() {
+  if (window.confirm("do you REALLY want to create a MOVIE of the latest experiment?\nThis might take a LONG time!")) {
+    window.location.replace("/create_movie")
+  } else {
+    window.location.repload()
+  }
+}
+
+function shutdownAlert() {
+  if (window.confirm("do you REALLY want to shut down the system?")) {
+    window.location.replace("/shutdown")
+  } else {
+    window.location.repload()
+  }
+}
+
+function stopAlert() {
+  if (window.confirm("do you REALLY want to stop the current run?")) {
+    window.location.replace("/shutdown")
+  } else {
+    window.location.repload()
+  }
+}
+
+function resizeButtons() {
+   
+   buttonHeight = window.innerHeight / 13
+   all_buttons = document.getElementsByName("main_page_button")
+   
+   buttonFontSize=buttonHeight*0.45
+
+   var i
+   for(i=0; i< all_buttons.length; i++) {
+      all_buttons[i].style.height=buttonHeight+"px"
+      all_buttons[i].style.width="100%"
+      all_buttons[i].style.fontSize=buttonFontSize+"px"
+   }
+   
+   table = document.getElementById("t01")
+   table.style.fontSize=buttonFontSize+"px"
+}
+
+</script>
+</head>
+
+<body onload="resizeButtons()">
+  
+     <div id="container">
+          Navigation: 
+            {% if not current_user.is_authenticated: %}
+            <a href="{{ url_for('login') }}">Login</a>
+            {% else %}
+            <a href="{{ url_for('logout') }}">Logout</a>
+            <a href="{{ url_for('setup') }}">Setup</a>
+             {% endif %}
+            {% if current_user.is_anonymous %}
+            user: anonymous
+            {% else %}
+            user: {{ current_user.username }}
+            {% endif %}
+      </div>
+
+     
+      <p><img src="static/logo-01.png" alt="Scopes Inc" style="float:right;width:124px;height:41px;">
+         <h2>Scopes Inc CBS Control center</h2>
+      </p>
+
+<br>
+<hr>
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        Messages:
+        <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        <br>
+    {% endif %}
+{% endwith %}
+
+{% if CBS_status == 'idle'%}
+    <a href="{{ url_for('setup_timelapse') }}" target="_parent"><button name="main_page_button">start new timelapse</button></a>
+{% elif  CBS_status == 'running'%}
+    <a href="{{ url_for('setup_timelapse') }}" target="_parent"><button name="main_page_button" disabled>start new timelapse</button></a> 
+{% else %}
+    <a href="{{ url_for('setup_timelapse') }}" target="_parent"><button name="main_page_button" disabled>start new timelapse</button></a>     
+{% endif %}
+
+{% if CBS_status == 'running'%}
+    <a href="{{ url_for('get_status') }}" target="_parent"><button name="main_page_button">check current status</button></a></td>
+{% else %}
+    <td><a href="{{ url_for('get_status') }}" target="_parent"><button name="main_page_button" disabled>check current status</button></a></td>
+{% endif %} 
+
+{% if CBS_status == 'running'%}
+    <a href="{{ url_for('stop_timelapse') }}" target="_parent"><button name="main_page_button">stop current timelapse</button></a>
+{% else %}
+    <a href="{{ url_for('stop_timelapse') }}" target="_parent"><button name="main_page_button" disabled>stop current timelapse</button></a>
+{% endif %} 
+
+{% if CBS_status == 'done'%}
+    <a href="{{ url_for('create_container') }}" target="_parent"><button name="main_page_button">create image container</button></a>
+{% else %}
+    <a href="{{ url_for('create_container') }}" target="_parent"><button name="main_page_button" disabled>create image container</button></a>
+{% endif %}
+ 
+{% if CBS_status == 'container_ready'%}    
+    <a href="{{ url_for('download_container') }}" target="_parent"><button name="main_page_button">download image container</button></a>
+{% elif CBS_status == 'creating_container'%}    
+    <a href="{{ url_for('download_container') }}" target="_parent"><button name="main_page_button" disabled>download image container</button></a> 
+{% else %}
+    <a href="{{ url_for('download_container') }}" target="_parent"><button name="main_page_button" disabled>download image container</button></a>
+{% endif %}
+
+{% if CBS_status == 'done' or CBS_status == 'container_ready' %}    
+    <button type="button" onclick="removeAlert()" name="main_page_button">delete images</button>
+{% else %}
+    <button type="button" onclick="removeAlert()" name="main_page_button" disabled>delete images</button>
+{% endif %} 
+
+<button type="button" onclick="shutdownAlert()" name="main_page_button" {{ shutdown_button }}>shut down system</button>
+
+
+</body>
+</html>
+

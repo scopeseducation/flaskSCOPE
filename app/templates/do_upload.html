@@ -1,0 +1,17 @@
+{% extends "base_noNav.html" %}
+
+{% block content %}
+<form action = "{{ url_for('upload_file') }}" method = "POST" enctype = "multipart/form-data">
+  <table id="t01">
+    <tr>
+      <td>choose file</td>
+      <td>submit</td> 
+   </tr>
+  <tr>
+    <td><input type = "file" name = "file" /></td>
+    <td><input type = "submit"/></td>
+  </tr>
+ 
+</table>
+
+{% endblock %}

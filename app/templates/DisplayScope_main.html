@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+ <table id="t01">
+     <tr align="middle">
+       {% if file_type == 'image' %}
+       <div><img src={{ file_name }} alt="image display failed" id="display_image" align="middle" onload="resizeImage()"></div>
+       {% else %}
+       <div><video width="640" height="480" autoplay loop controls><source src="{{ file_name }}" type="video/mp4">video failed</video></div>
+       {% endif %}
+     </tr>
+     <tr align="middle">
+       <a href="{{ url_for('index') }}" target="_parent"><button name="page_button">get new information</button></a>
+     </tr>
+  </table>
+    
+{% endblock %}
