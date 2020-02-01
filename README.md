@@ -20,12 +20,10 @@ On the Raspberry Pi do the following (you need access to the internet):
 Follow this tutorial to activate the Pi camera, which includes doing the obligatory updates:
 https://www.raspberrypi.org/documentation/configuration/camera.md
 
-Install GIT
+Install GIT and clone our github repository
 
     sudo apt-get install git
-    fork flaskSCOPE
-
-git clone https://github.com/scopeseducation/flaskSCOPE
+    git clone https://github.com/scopeseducation/flaskSCOPE.git
 
 We provide an installer script which has to be run as sudo
 
