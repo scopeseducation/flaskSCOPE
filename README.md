@@ -3,7 +3,8 @@
 FlaskSCOPE provides the web interface to interact with our SCOPES didactic device using the microframework Flask (https://www.fullstackpython.com/flask.html).
 FlaskSCOPE also provides scripts operate ChronobioScope, DNAscope and DisplaySCOPE (for details see https://scopeseducation.org/).
 
-FlaskSCOPE is designed to operate on a Raspberry Pi Zero W and as a simple install option we will provide a pre-configured image on our webpage https://scopeseducation.org/downloads/ soon.
+**Installing flaskSCOPE from pre-configured image**
+FlaskSCOPE is designed to operate on a Raspberry Pi Zero W. To provide a simple install option we followed the steps described in "Installing flaskSCOPE from scratch" below on a Raspberry Pi Zero W and prepared an image from this install. This pre-configured image will be available on our webpage https://scopeseducation.org/downloads/ soon.
 
 For instruction on how to copy this image to an SD card we recommend the official tutorial: https://www.raspberrypi.org/documentation/installation/installing-images/README.md.
 
