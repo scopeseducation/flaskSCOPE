@@ -40,6 +40,11 @@ CARE: after this, you will ***NOT*** be able to connect to the internet via WIFI
     chmod +x ap_install.sh
     sudo ./ap_install.sh
 
+A few notes on the operation of FlaskSCOPE:
+- name of the access point: FlaskScope
+- password: flaskscope
+- IP: 192.168.4.1
+
 Comments and pull requests welcome.
 
 For more information on SCOPES visit our website:
