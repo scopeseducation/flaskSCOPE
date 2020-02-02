@@ -36,8 +36,8 @@ We provide an installer script that has to be run as sudo.
 
 CARE: after this, you will ***NOT*** be able to connect to the internet via WIFI!
 
-    chmod +x install_ap.sh
-    sudo ./install_ap.sh
+    chmod +x ap_install.sh
+    sudo ./ap_install.sh
 
 Comments and pull requests welcome.
 
