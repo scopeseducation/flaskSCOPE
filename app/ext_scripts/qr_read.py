@@ -1,19 +1,18 @@
 #!/usr/bin/python3
 
-#tests camera input for the presence of a QR code 
-#if a file was linekd to this code a file is updated in ramdisk
-#works with FlaskScope
-#needs python3 to read camera input into numpy array
+#uses raspistill to take a picture from the Pi-camera and saves it on a RAM-disk
+#this image is then tested for the presence of a QR code 
+#if a file was linked to this QR-code this information is updated in ramdisk
+#link of QR-codes to files is provided in a config file
+#designed for use with FlaskScope
 
 from PIL import Image
 from time import sleep
 from pyzbar.pyzbar import decode
-#import picamera
 
 import blinkt
 import os
 import time
-#import numpy as np
 
 def show_color_line(r,g,b,t):
     blinkt.set_brightness(0.5)
@@ -28,7 +27,7 @@ def show_color(r,g,b):
         blinkt.set_pixel(i, r, g, b)
     blinkt.show()
 
-#current information is found here:
+#current information for file to be displayed is found here:
 current_file = "/media/ramdisk/qr_current.txt"
 
 QR2file={}
@@ -43,7 +42,6 @@ cf.close()
 for line in cf_lines:
     line = line.replace('\n', '')
     parts = line.split("\t")
-    #file to display - for html and movie the actual file, for image the index
     QR2file[parts[1]] = parts[0]
     code_list.append(parts[1])
 
@@ -54,7 +52,7 @@ QR_id = ""
 old_QR_id = QR_id
 
 cont = 1
-#do infinite cycle
+#cycle until stop signal is detected
 while cont == 1:
    #capture image - uses raspbians raspistill for this task
    os.system('raspistill -w 320 -h 240 -t 1 -o /media/ramdisk/qr_image.png > /media/ramdisk/qr_image.out')
@@ -62,7 +60,7 @@ while cont == 1:
    #decode all QR codes in the image
    qrcodes = decode(Image.open('/media/ramdisk/qr_image.png'))
 
-   #check if any detected code is registered for a task
+   #check if any detected code is linked to a file
    #if more than 1 valid code is detected - the last analysed one is used
    for qrcode in qrcodes:
       code=qrcode.data.decode("utf-8")
@@ -102,7 +100,7 @@ while cont == 1:
          blinkt.clear()
          blinkt.show()
 
-   #check if stop file exists
+   #check if stop file exists - this is the stop signal
    if (os.path.exists('/media/ramdisk/qr_code.stop')):
       cont = 0
 
