@@ -3,7 +3,7 @@
 {% block content %}
 
   <div class="image"> 
-      <img id="display_image" src="{{ img_name }}" alt="latest image"></td>
+      <img id="display_image" src="{{ img_name }}" alt="latest image" onload="resizeImage()"></td>
   </div>
       
   running since: {{ runtime }}
